@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Listing Posts</h3>
+  </div>
+ <div class="table-responsive"> <table class="table">
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th class="hidden-xs">Content</th>
+      <th>Picture</th>
+      <th>User</th>
+      <th class="hidden-xs">Category</th>
+      <th colspan="3"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @posts.each do |post| %>
+        <tr>
+          <td><%= post.title %></td>
+          <td class="hidden-xs"><%= excerpt(post.content, '',radius: 20) %></td>
+          <td><%= image_tag post.picture_url(:thumb) if post.picture? %></td>
+          <td><%= User.find(post.user_id).email.split('@')[0] %></td>
+          <td class="hidden-xs"><%= link_to Category.find(post.category_id).name, category_path(post.category_id) %></td>
+          <td><%= link_to 'Show', post %></td>
+          <td class="hidden-xs"><%= link_to 'Edit', edit_post_path(post) if current_user.id == post.user_id || current_user.try(:admin?) %></td>
+          <td class="hidden-xs"><%= link_to 'Destroy', post, method: :delete, data: {confirm: 'Are you sure?'} if current_user.try(:admin?) %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table></div>
+</div>
+
+  <%= link_to 'New Post', new_post_path, :class => "btn btn-sm btn-default", :role => "button" %>

@@ -1,0 +1,30 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Listing all comments of this post</h3>
+  </div>
+ <div class="table-responsive"> <table class="table">
+    <thead>
+    <tr>
+      <th>User</th>
+      <th>Comments</th>
+      <th colspan="2" class="hidden-xs"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @comments.each do |comment| %>
+        <tr>
+          <td><%= User.find(comment.user_id).email.split('@')[0] %></td>
+          <td><%= comment.content %></td>
+          <td class="hidden-xs"><%= link_to 'Edit', edit_post_comment_path(comment.post, comment) if current_user.try(:admin?) %></td>
+          <td class="hidden-xs"><%= link_to 'Destroy', [comment.post, comment], method: :delete, data: {confirm: 'Are you sure?'} if current_user.try(:admin?) %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table></div>
+</div>
+
+<div class="btn-group" role="group">
+  <%= link_to 'New Comment', new_post_comment_path, :class => "btn btn-sm btn-default", :role => "button" %>
+  <%= link_to 'Back to the Post', @post, :class=>"btn btn-sm btn-default" %>
+</div>

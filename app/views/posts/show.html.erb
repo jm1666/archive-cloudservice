@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Topic: <%= @post.title %> <small>was posted on <%= @post.created_at %> by <%= @username %></small></h3>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-9">
+        <p>
+          Category: <%= link_to Category.find(@post.category_id).name, category_path(@post.category_id), :class => "btn btn-xs btn-primary" %>
+        </p>
+        <p>
+          <%= @post.content %>
+        </p>
+      </div>
+      <div class="col-sm-3">
+        <%= image_tag(@post.picture_url, :class=>"img-responsive") if @post.picture.present? %>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <% @comments.last(3).each do |comment| %>
+        <div>
+          <p><strong><%= User.find(comment.user_id).email.split('@')[0] %></strong> on <%= Time.at(comment.created_at) %> : <%= comment.content %></p>
+        </div>
+    <% end %>
+    <div class="btn-group">
+      <%= link_to 'New Comment', new_post_comment_path(@post), :class=>"btn btn-xs btn-default" %>
+      <%= link_to 'Read all Comments', post_comments_path(@post), :class=>"btn btn-xs btn-default" %>
+      <%= link_to 'Edit', edit_post_path(@post), :class=>"btn btn-xs btn-default" if current_user.id == @post.user_id || current_user.try(:admin?) %>
+    </div>
+  </div>
+</div>
+
+<%= link_to 'Back', posts_path, :class=>"btn btn-sm btn-default" %>

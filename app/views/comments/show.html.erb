@@ -1,0 +1,15 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Display a comment for <%= link_to Post.find(@comment.post_id).title, post_path(@comment.post_id) %></h3>
+  </div>
+  <div class="panel-body">
+    <p>User: <%= @username %></p>
+    <p><%= @comment.content %></p>
+  </div>
+</div>
+
+
+<div class="btn-group" role="group">
+  <%= link_to 'Edit', edit_post_comment_path(@comment.post, @comment), :class=>"btn btn-xs btn-default" if current_user.try(:admin?) %>
+  <%= link_to 'Back', post_comments_path, :class=>"btn btn-xs btn-default" %>
+</div>

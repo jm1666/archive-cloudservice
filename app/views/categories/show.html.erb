@@ -1,0 +1,14 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Posts In Category: <%= @category.name %></h3>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <% Post.where(category_id: @category.id).each do |post| %>
+          <li><%= link_to Post.find_by_title(post.title).title, post_path(post.id) %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<%= link_to 'Back', categories_path, :class => "btn btn-xs btn-default" %>
